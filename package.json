@@ -1,0 +1,25 @@
+{
+  "name": "@banjurider/network-util-pack",
+  "version": "1.0.0",
+  "description": "Useful network utility libraries.",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/banjurider/network-util-pack.git"
+  },
+  "keywords": [
+    "react-native",
+    "fetch",
+    "network"
+  ],
+  "author": "banjurider",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/banjurider/network-util-pack/issues"
+  },
+  "homepage": "https://github.com/banjurider/network-util-pack#readme"
+}
