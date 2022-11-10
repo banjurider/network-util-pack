@@ -23,14 +23,33 @@
 /**
  * GetBiasAsync - handles GET action with biased return types.
  * @param {String} url - a valid string url
+ * @param {Object} headers - valid headers object
  * @param {Boolean} echo - (!dev mode) to logcat action 
  * @param {Boolean} bias - for api sending only http status  
  * @param {Function} callback - action to handle return
  * @param {Function} errorCallback - action to handle error
+ * @implementation 
+ * ```js
+ * const handleSuccess = (res) => {
+ *  ...
+ *  console.log(res);
+ * };
+ * 
+ * const handleError = (err) => {
+ *  ...
+ *  console.error(err);
+ * };
+ * 
+ * const headers = { "content-type": "application/json", "authorization": "bearer ..." };
+ * const url = "http://example.com/api";
+ * 
+ * GetBiasAsync(url, headers, __DEV__, false, handleSuccess, handleError);
+ * 
+ * ```
  */
-const GetBiasAsync = async (url, echo, bias, callback, errorCallback) => {
-    const ec = echo || false, hasbias = bias || false;
-    const res = await fetch(url);
+const GetBiasAsync = async (url, headers, echo, bias, callback, errorCallback) => {
+    const ec = echo || false, hasbias = bias || false, header = headers || { "content-type": "application/json" };
+    const res = await fetch(url, { method: "GET", headers: header });
     if(hasbias) {
         if(ec) console.log("GetBiasAsync:HttpStatus", res.status);
         callback({ status: res.status, data: null });
