@@ -21,9 +21,9 @@
 };
 
 /**
- * GetBiasAsync - handles GET action with biased return types.
+ * GetBiasAsync_Extended - handles GET action with biased return types.
  * @param {String} url - a valid string url
- * @param {Object} headers - valid headers object
+ * @param {object} headers - valid headers object
  * @param {Boolean} echo - (!dev mode) to logcat action 
  * @param {Boolean} bias - for api sending only http status  
  * @param {Function} callback - action to handle return
@@ -47,9 +47,53 @@
  * 
  * ```
  */
-const GetBiasAsync = async (url, headers, echo, bias, callback, errorCallback) => {
+const GetBiasAsync_Extended = async (url, headers, echo, bias, callback, errorCallback) => {
     const ec = echo || false, hasbias = bias || false, header = headers || { "content-type": "application/json" };
     const res = await fetch(url, { method: "GET", headers: header });
+    if(hasbias) {
+        if(ec) console.log("GetBiasAsync:HttpStatus", res.status);
+        callback({ status: res.status, data: null });
+        return;
+    }
+    res.json().then(data => {
+        if (ec) console.log("GetBiasAsync:ReturnData", { data: data, status: res.status });
+        callback({status: res.status, data: data});
+    })
+    .catch(err => {
+        if (ec) console.log("GetBiasAsync:CatchError", err);
+        errorCallback(err);
+    });
+};
+
+
+/**
+ * GetBiasAsync - handles GET action with biased return types.
+ * @param {String} url - a valid string url
+ * @param {Boolean} echo - (!dev mode) to logcat action 
+ * @param {Boolean} bias - for api sending only http status  
+ * @param {Function} callback - action to handle return
+ * @param {Function} errorCallback - action to handle error
+ * @implementation 
+ * ```js
+ * const handleSuccess = (res) => {
+ *  ...
+ *  console.log(res);
+ * };
+ * 
+ * const handleError = (err) => {
+ *  ...
+ *  console.error(err);
+ * };
+ * 
+ * const url = "http://example.com/api";
+ * 
+ * GetBiasAsync(url, __DEV__, false, handleSuccess, handleError);
+ * 
+ * ```
+ */
+const GetBiasAsync = async (url, echo, bias, callback, errorCallback) => {
+    const ec = echo || false, hasbias = bias || false;
+    const res = await fetch(url);
     if(hasbias) {
         if(ec) console.log("GetBiasAsync:HttpStatus", res.status);
         callback({ status: res.status, data: null });
@@ -99,4 +143,4 @@ const PostBiasAsync = async (url, method, data, headers, echo, bias, callback, e
     });
 };
 
-export { fetchAsync, GetBiasAsync, PostBiasAsync };
+export { fetchAsync, GetBiasAsync, GetBiasAsync_Extended, PostBiasAsync };
