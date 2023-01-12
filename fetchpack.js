@@ -48,7 +48,7 @@
  * ```
  */
 const GetBiasAsync_Extended = async (url, headers, echo, bias, callback, errorCallback) => {
-    const ec = echo || false, hasbias = bias || false, header = headers || { "content-type": "application/json" };
+    const ec = echo || false, hasbias = bias || false, header = headers || { "content-type": "application/json", "Accept": "application/json" };
     const res = await fetch(url, { method: "GET", headers: header });
     if(hasbias) {
         if(ec) console.log("GetBiasAsync:HttpStatus", res.status);
@@ -122,7 +122,7 @@ const GetBiasAsync = async (url, echo, bias, callback, errorCallback) => {
  * @param {Function} errorCallback - action to handle return
  */
 const PostBiasAsync = async (url, method, data, headers, echo, bias, callback, errorCallback) => {
-    const ec = echo || false, hasbias = bias || false, _headers = headers || {"Content-type": "application/json"};
+    const ec = echo || false, hasbias = bias || false, _headers = headers || {"Content-type": "application/json", "Accept": "application/json"};
     
     const res = await fetch(url, { method: String(method).toUpperCase(), headers: _headers, body: JSON.stringify(data) });
     if(ec) {
